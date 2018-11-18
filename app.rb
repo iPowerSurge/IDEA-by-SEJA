@@ -1,4 +1,5 @@
 require "sinatra"
+require_relative "authentication.rb"
 require "data_mapper"
 
 # need install dm-sqlite-adapter
@@ -18,8 +19,17 @@ class Video
 end
 
 DataMapper.finalize
+User.auto_upgrade!
 Video.auto_upgrade!
 
+#make an admin user if one doesn't exist!
+if User.all(administrator: true).count == 0
+	u = User.new
+	u.email = "admin@admin.com"
+	u.password = "admin"
+	u.administrator = true
+	u.save
+end
 
 #the following urls are included in authentication.rb
 # GET /login
@@ -35,5 +45,5 @@ get "/" do
 end
 
 get "/perfumes" do
-	return "Work in progress..."
+	erb :perfumes
 end
