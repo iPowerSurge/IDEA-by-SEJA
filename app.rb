@@ -11,16 +11,18 @@ else
   DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/app.db")
 end
 
-class Video
+class Perfume
 	include DataMapper::Resource
 
 	property :id, Serial
-	#fill in the rest
+	property :name, Text
+	property :qty, Text
+	property :woman, Boolean, :default => false
 end
 
 DataMapper.finalize
 User.auto_upgrade!
-Video.auto_upgrade!
+Perfume.auto_upgrade!
 
 #make an admin user if one doesn't exist!
 if User.all(administrator: true).count == 0
@@ -45,9 +47,37 @@ get "/" do
 end
 
 get "/men" do
+	admin_only!
+	@perfume = Perfume.all(pro: false)
 	erb :perfumesmen
 end
 
 get "/women" do
+	admin_only!
+	@perfume = Perfume.all(pro: true)
 	erb :perfumeswomen
+end
+
+get "/perfume/new" do
+	admin_only!
+	erb :new_perfume
+end
+
+post "/perfume/create" do
+	admin_only!
+	if(params["Name"] && params["Quantity"])
+		v = Perfume.new
+		v.name = params["Name"]
+		v.qty = params["Quantity"]
+
+		if params["Woman?"]
+			if params["Woman?"] == "on"
+				v.woman = true
+			end
+		end
+		v.save
+		return "Succesfully added #{v.name}"
+	else
+		return "Missing information"
+	end
 end

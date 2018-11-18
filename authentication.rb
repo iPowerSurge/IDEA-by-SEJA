@@ -68,3 +68,10 @@ def authenticate!
 		redirect "/login"
 	end
 end
+
+def admin_only!
+	authenticate!
+	if current_user.administrator == false
+		redirect "/"
+	end
+end
