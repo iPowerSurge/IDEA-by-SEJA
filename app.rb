@@ -44,6 +44,10 @@ get "/" do
 	erb :index
 end
 
-get "/perfumes" do
-	erb :perfumes
+get "/men" do
+	erb :perfumesmen
+end
+
+get "/women" do
+	erb :perfumeswomen
 end

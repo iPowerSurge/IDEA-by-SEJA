@@ -9,17 +9,7 @@
       <li class="nav-item active">
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
 
-        <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Perfumes
-        </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a class="dropdown-item" href="#">Men</a>
-          <a class="dropdown-item" href="#">Women</a>
-        </div>
-      </div>
-
-      <% if current_user %>
+        <% if current_user %>
         <li class="nav-item">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
@@ -28,7 +18,15 @@
           <a class="nav-link" href="/login">Login</a>
         </li>
       <% end %>
-
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Perfumes
+        </button>
+        <div class="dropdown-menu">
+        <a class="dropdown-item" href="/men">Men</a>
+        <a class="dropdown-item" href="/women">Women</a>
+      </div>
     </ul>
+    
   </div>
 </nav>
