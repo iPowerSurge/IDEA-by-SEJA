@@ -1,4 +1,5 @@
 require "sinatra"
+require "sinatra/flash"
 require_relative "authentication.rb"
 require "data_mapper"
 
@@ -17,7 +18,6 @@ class Perfume
 	property :id, Serial
 	property :name, Text
 	property :qty, Text
-	property :woman, Boolean, :default => false
 end
 
 DataMapper.finalize
@@ -46,17 +46,12 @@ get "/" do
 	erb :index
 end
 
-get "/men" do
+get "/perfumes" do
 	admin_only!
-	@perfume = Perfume.all(pro: false)
-	erb :perfumesmen
+	@perfume = Perfume.all
+	erb :perfumes
 end
 
-get "/women" do
-	admin_only!
-	@perfume = Perfume.all(pro: true)
-	erb :perfumeswomen
-end
 
 get "/perfume/new" do
 	admin_only!
@@ -69,15 +64,37 @@ post "/perfume/create" do
 		v = Perfume.new
 		v.name = params["Name"]
 		v.qty = params["Quantity"]
-
-		if params["Woman?"]
-			if params["Woman?"] == "on"
-				v.woman = true
-			end
-		end
 		v.save
-		return "Succesfully added #{v.name}"
+		flash[:success] = "Succesfully added #{v.name}."
+		redirect "/"
 	else
-		return "Missing information"
+		flash[:error] = "Error: Missing information."
+		redirect "/"
 	end
+end
+
+get "/add_to_cart" do
+	p = Perfume.get(pid.to_i)
+	if(session[:cart][p.name])
+		session[:cart][p.name] += 1
+		redirect "/perfumes"
+	else
+		session[:cart][p.name] = 0
+		redirect "/perfumes"
+	end
+end
+
+get "/remove_from_cart" do
+	p = Perfume.get(pid.to_i)
+	if(session[:cart][p.name] != nil)
+		session[:cart][p.name] = session[:cart][p.name] - 1
+		redirect "/perfumes"
+	else
+		session[:cart][p.name] = 0
+	end
+end
+
+get "/cart" do
+	@cart = session[:cart]
+	erb :cart
 end

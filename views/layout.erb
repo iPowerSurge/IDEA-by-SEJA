@@ -15,6 +15,26 @@
 	<%= erb :navigation %>
 
 	<main role="main">
+			<div class="container">
+				<% if flash[:success] %>
+					<div class="alert alert-success alert-dismissible fade show" role="alert">
+						<%= flash[:success] %>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<% end %>
+
+				<% if flash[:error] %>
+					<div class="alert alert-danger alert-dismissible fade show" role="alert">
+						<%= flash[:error] %>
+						<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+				<% end %>
+
+				</div>
 
 		<%= yield %>
 
@@ -22,8 +42,9 @@
 
 
     <footer class="container">
-      <p>Josvan Perfumes 2018 &copy;</p>
-    </footer>
+      <center><p>SEJA 2018 &copy;</p></center>
+	</footer>
+	
 
 
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
