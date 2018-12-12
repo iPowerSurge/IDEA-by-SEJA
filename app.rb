@@ -60,10 +60,9 @@ end
 
 post "/perfume/create" do
 	admin_only!
-	if(params["Name"] && params["Quantity"])
+	if(params["Name"])
 		v = Perfume.new
 		v.name = params["Name"]
-		v.qty = params["Quantity"]
 		v.save
 		flash[:success] = "Succesfully added #{v.name}."
 		redirect "/"
