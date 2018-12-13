@@ -35,7 +35,6 @@ end
 
 def make_cart
 	session[:cart]={}
-	flash[:error] = "Had to make new cart"
 	redirect "/perfumes"
 end
 
